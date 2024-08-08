@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .background{ /* responsive background */
+            background-image: url(/imgs/blendedclouds.jpg);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            background-size: cover;
+
+            
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid background opacity">
+        <div class="container my-5 text-center">
+            <h1 class="display-5 text-center"> Simply Weather App</h1>
+            <img src="/imgs/cherryblossom.jpg" class="card-img" alt ="cherry.jpg" style ="border-radius:8px"><!-- added an image overlay-->
+            <div class="card-img-overlay text-center"> <!-- extending the overlay-->
+                <div class="d-grip gap-3"> <!-- adding a gap in between text-->
+                    <!--margin-top is important so that you can adjust the sizing of the -->
+                    <div class="container text-center" style = "margin-top:200px"> <!-- setting a centered property + smaller width-->
+                        <div class="col-auto"><!-- allowing for more responsive website-->
+                            <label for="" class="form-label">City:</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name=""
+                                id="mycity"
+                                aria-describedby="helpId"
+                                placeholder="input a valid city name"
+                                aria-label=".form-control-md example"
+                            />
+                        </div>
+                        <div class="p-4 container text-center">
+                            <div class="col-auto">
+                                <button onclick = "getWeather()" type="button" class="btn btn-primary"> Get Weather </button><br><br>
+                            </div>
+
+                            <div id = "mydiv">
+                                <!-- Weather info should display here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+    
+    <!-- Steps - 
+
+    1. Get Weather data from openweathermap site and display in console
+    2. Display it in our webpage on a button click
+        -- we need a button onClick - function name
+        -- create a function - write code to fetch from remote/weather server 
+    3.For weather app Change around the theme!! (do 4 different themes)
+    -->
+    
+        <script>
+            function getWeather(){
+                // let city = "Mumbai"
+                let city = document.getElementById('mycity').value;
+                let key = 'd72729578543cfc435344f99b226b1c9';
+                let wurl = (`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}&units=metric`);
+                
+                fetch(wurl) // retreiving the url from api (application programming interface)
+                .then( (resp) => {return resp.json()}) // transverses through json data and puts it in map
+                .then( (data) => { 
+                    console.log(data); // reads all data
+                    
+                    let currentTemp = data.main['temp']
+                    console.log(data.main['temp']);  // showing temperature (main > temp)
+
+                    
+                    let tempMin = data.main['temp_min'];
+                    
+                    let tempMax = data.main['temp_max'];
+                    
+                    let windSpeed = data.wind.speed;
+                    
+                    let weatherActual = data.weather[0].main;
+                    
+
+                    document.getElementById('mydiv').innerHTML = ` <div class='fs-3'>Weather in ${city}</div><b>Condition</b>: ${weatherActual}<br>
+                        <b>Current temp</b>: ${currentTemp}˚C<br> <b>Max Temp</b>: ${tempMax}˚C<br> <b>Min Temp</b>: ${tempMin}˚C<br>
+                        <b>WindSpeed</b>: ${windSpeed}
+                        `;
+                })
+                
+
+            }
+        </script>
+
+
+</body>
+</html>
